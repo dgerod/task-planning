@@ -1,0 +1,7 @@
+
+ff: parsing domain file
+domain 'ORGANIZE_BOXES' defined
+ ... done.
+ff: parsing problem file
+test-5_problem.pddl: syntax error in line 10, ')':
+'define' expected
