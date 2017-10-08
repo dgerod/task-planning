@@ -23,11 +23,11 @@ References:
 * https://github.com/guillaume-chevalier/AI-Planning-Solver-Shakeys-World-PDDL
 * https://www.ida.liu.se/%7ETDDC17/info/labs/lab4_planning.en.shtml
 
-## POPF
+## Forward-chaining Temporal Planner 
 
-POPF is the forward-chaining partial-order planning, it isbuilt on the foundations of grounded forward search, in combination with linear pro- gramming to handle continuous linear numeric change. This binary is the one provided by ROSPlan but it is developed by A. Coles of the KCL. 
+Its name derives from the fact that it incorporates ideas from partial-order planning. This binary is the one provided by ROSPlan but it is developed by _A. Coles_ of the KCL. 
 
-Usage: `./popf -o <domain file> -f <problem file>`
+Usage: `./popf <domain file> -f <problem file>`
 
 References: 
 * https://github.com/KCL-Planning/ROSPlan
