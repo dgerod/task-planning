@@ -1,14 +1,9 @@
 
-# task-planning
+# Task Planning
 
 Some AI planners that work with PDDL and examples.
 
-## Planners
-
-* Fast Forward (ff)
-* Interference Progression Planner (ipp)
-
-### Fast Forward
+## Fast Forward
 
 FF is a very successful forward-chaining heuristic search planner producing sequential plans.
 
@@ -18,7 +13,7 @@ References:
 * https://github.com/guillaume-chevalier/AI-Planning-Solver-Shakeys-World-PDDL
 * https://www.ida.liu.se/%7ETDDC17/info/labs/lab4_planning.en.shtml
 
-### Interference Progression Planner
+## Interference Progression Planner
 
 IPP is a descendant of Graphplan and it produces optimal parallel plans.
 
@@ -27,4 +22,15 @@ Usage: `./ipp -o <domain file> -f <problem file>`
 References: 
 * https://github.com/guillaume-chevalier/AI-Planning-Solver-Shakeys-World-PDDL
 * https://www.ida.liu.se/%7ETDDC17/info/labs/lab4_planning.en.shtml
+
+## POPF
+
+POPF is the forward-chaining partial-order planning, it isbuilt on the foundations of grounded forward search, in combination with linear pro- gramming to handle continuous linear numeric change. This binary is the one provided by ROSPlan but it is developed by A. Coles of the KCL. 
+
+Usage: `./popf -o <domain file> -f <problem file>`
+
+References: 
+* https://github.com/KCL-Planning/ROSPlan
+* https://nms.kcl.ac.uk/andrew.coles
+* http://www.inf.kcl.ac.uk/research/groups/planning
 
