@@ -25,7 +25,7 @@ References:
 
 ## Forward-chaining Temporal Planner 
 
-Its name derives from the fact that it incorporates ideas from partial-order planning. This binary is the one provided by ROSPlan but it is developed by _A. Coles_ of the KCL. 
+POPF name derives from the fact that it incorporates ideas from partial-order planning. This binary is the one provided by ROSPlan but it is developed by _A. Coles_ of the KCL. 
 
 Usage: `./popf <domain file> -f <problem file>`
 
