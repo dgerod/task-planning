@@ -1,0 +1,4 @@
+
+Errors: 2, warnings: 0
+test-2_domain.pddl: line: 32: Error: Syntax error in action declaration.
+test-2_domain.pddl: line: 32: Error: Unreadable structure

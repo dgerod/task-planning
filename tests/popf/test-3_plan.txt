@@ -1,0 +1,8 @@
+Warnings encountered when parsing Domain/Problem File
+
+Errors: 0, warnings: 1
+test-3_domain.pddl: line: 25: Warning: Undeclared requirement :negative-preconditions 
+Number of literals: 2
+Constructing lookup tables:
+Post filtering unreachable actions: 
+[01;34mNo analytic limits found, not considering limit effects of goal-only operators[00m
