@@ -1,8 +1,21 @@
-Warnings encountered when parsing Domain/Problem File
-
-Errors: 0, warnings: 1
-test-3_domain.pddl: line: 25: Warning: Undeclared requirement :negative-preconditions 
 Number of literals: 2
 Constructing lookup tables:
 Post filtering unreachable actions: 
 [01;34mNo analytic limits found, not considering limit effects of goal-only operators[00m
+Initial heuristic = 1.000
+
+; Plan found with metric 0.000
+; States evaluated so far: 2
+; Time 0.00
+0.000: (pickup_object c1 v1)  [0.001]
+
+ * All goal deadlines now no later than -0.000
+
+Resorting to best-first search
+
+Problem Unsolvable
+;;;; Solution Found
+; States evaluated: 2
+; Cost: 0.000
+; Time 0.00
+0.000: (pickup_object c1 v1)  [0.001]

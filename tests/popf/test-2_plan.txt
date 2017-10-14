@@ -1,4 +1,27 @@
+Number of literals: 35
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%] [110%] [120%] [130%] [140%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%] [110%] [120%] [130%] [140%]
+[01;34mNo analytic limits found, not considering limit effects of goal-only operators[00m
+Initial heuristic = 4.000
+b (3.000 | 0.000)b (2.000 | 0.001)b (1.000 | 0.001)
+; Plan found with metric 0.001
+; States evaluated so far: 5
+; Time 0.00
+0.000: (goto_place b1)  [0.001]
+0.000: (goto_place c1)  [0.001]
+0.001: (find_object v1 b1)  [0.001]
+0.001: (find_object v1 c1)  [0.001]
 
-Errors: 2, warnings: 0
-test-2_domain.pddl: line: 32: Error: Syntax error in action declaration.
-test-2_domain.pddl: line: 32: Error: Unreadable structure
+ * All goal deadlines now no later than 0.001
+
+Resorting to best-first search
+b (3.000 | 0.000)b (1.000 | 0.000)
+Problem Unsolvable
+;;;; Solution Found
+; States evaluated: 53
+; Cost: 0.001
+; Time 0.00
+0.000: (goto_place b1)  [0.001]
+0.000: (goto_place c1)  [0.001]
+0.001: (find_object v1 b1)  [0.001]
+0.001: (find_object v1 c1)  [0.001]

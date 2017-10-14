@@ -7,7 +7,6 @@
     v3 v4 - videotape
 )
 (:init
- 	(not (grasped v1))
 )
 (:goal (and
     (robot-at c1)

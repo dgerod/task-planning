@@ -7,10 +7,9 @@
     v3 v4 - videotape
 )
 (:init
- 	(not (localised v1))
 )
 (:goal (and
     (localised v1)
-	(object-at v1 c1)
+    (object-at v1 c1)
 ))
 )

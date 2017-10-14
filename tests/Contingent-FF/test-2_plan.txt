@@ -1,6 +1,0 @@
-
-ff: can't find operator file: test-2_domain.pddl
-
-: No such file or directory
-
-ff: parsing domain file
