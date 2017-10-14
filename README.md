@@ -25,18 +25,19 @@ References:
 
 ## Forward-chaining Temporal Planner 
 
-POPF name derives from the fact that it incorporates ideas from partial-order planning, this binary is the one provided by ROSPlan. However, the planner was developed by _A. Coles_. 
+POPF name derives from the fact that it incorporates ideas from partial-order planning, it does not support negative preconditions. This binary is the one provided by ROSPlan, but the planner was developed by _A. J. Coles_, _A. I. Coles_, M. Fox, and D. Long_.
 
 Usage: `./popf <domain file> <problem file>`
 
 References: 
-* https://nms.kcl.ac.uk/andrew.coles
-* http://www.inf.kcl.ac.uk/research/groups/planning
+* https://nms.kcl.ac.uk/planning/software/popf.html
 * https://github.com/KCL-Planning/ROSPlan
 
 ## Contingent Fast Forward
 
-Contingent-FF is an extension of Conformant-FF to further treat partial observability (observation actions), finding tree-shaped plans with branches; the system also includes a preliminary treatment of a simple form of non-deterministic effects. While Conformant-FF planner is a system that extends the classical FF planner with the ability to treat initial state uncertainty expressed in the form of a CNF formula. This binary is the one provided by ROSPlan but the planner was developed by _J. Hoffmann_ in collaboration with _R. Brafman_.
+Contingent-FF is an extension of Conformant-FF to further treat partial observability (observation actions), finding tree-shaped plans with branches; the system also includes a preliminary treatment of a simple form of non-deterministic effects. The planner does not support negative preconditions. While Conformant-FF planner is a system that extends the classical FF planner with the ability to treat initial state uncertainty expressed in the form of a CNF formula. 
+
+This binary is the one provided by ROSPlan but the planner was developed by _J. Hoffmann_ in collaboration with _R. Brafman_.
 
 Usage: `./Contingent-FF -o <domain file> -f <problem file>`
 
