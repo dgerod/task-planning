@@ -34,36 +34,39 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <ros/ros.h>
-#include <rosplan_dispatch_msgs/CompletePlan.h>
-
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <cstdio>
+#include <iostream>
+#include <gtest/gtest.h>
+
+#include "rosplan_planning_system/FFPlanParser.h"
 
 void
-plan_cb(const rosplan_dispatch_msgs::CompletePlan::ConstPtr& msg)
+print_actions(const std::vector<rosplan_dispatch_msgs::ActionDispatch> actions)
 {
-	for (const auto &a : msg->plan) {
-		std::string s;
-		for (const auto &p : a.parameters) {
-			s += " " + p.value;
-		}
-		printf("%7.3f: (%s %s)  [%.3f]\n", a.dispatch_time, a.name.c_str(), s.c_str(), a.duration);
-	}
-	ros::shutdown();
+    for(const auto &a : actions) {
+        std::string s;
+        for (const auto &p : a.parameters) {
+            s += " " + p.value;
+        }
+        printf("%7.3f: (%s %s)  [%.3f]\n", a.dispatch_time, a.name.c_str(), s.c_str(), a.duration);
+    }
 }
-
-
-
 
 int
 main(int argc, char **argv)
-{
-	ros::init(argc, argv, "rcll_refbox_peer");
-
-	ros::NodeHandle n;
-	ros::Subscriber sub_plan = n.subscribe("kcl_rosplan/plan", 1, plan_cb);
-
-	ros::spin();
-	
-	return 0;
+{   
+    std::string dataPath(argv[1]);
+    PlanningEnvironment environment;
+    size_t freeActionId = 0;
+    
+    FFPlanParser planParser;
+    planParser.reset();
+    planParser.preparePlan(dataPath, environment, freeActionId);
+    
+    print_actions(planParser.action_list);
+    
+    return 0;
 }

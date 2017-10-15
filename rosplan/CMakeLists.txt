@@ -8,8 +8,8 @@ download_project(PROJ                googletest
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 
 include_directories(
-    .
-    ./test
+    ./test/fwk/rosplan_planning_system/
+    ./test/fwk
     include
     ${GTEST_INCLUDE_DIRS}
 )
@@ -18,3 +18,5 @@ set(PRODUCT_SOURCES
 
 add_executable(test_ff_plan_parser test/test_ff_parser.cpp ${PRODUCT_SOURCES})
 target_link_libraries(test_ff_plan_parser gtest gmock_main)
+
+#add_executable(print_plan test/print_plan.cpp ${PRODUCT_SOURCES})

@@ -4,9 +4,10 @@
  * The problem instance is fetched from the Knowledge Base.
  */
 #include <iostream>
-#include <string>
 #include <map>
 #include <vector>
+#include <string>
+#include "rosplan_knowledge_msgs/KnowledgeItem.h"
 
 #ifndef KCL_environment
 #define KCL_environment
@@ -14,10 +15,10 @@
 namespace KCL_rosplan
 {
 
-	class PlanningEnvironment
-	{
-	public:
-		PlanningEnvironment() : domain_parsed(false) {}
+    class PlanningEnvironment
+    {
+    public:
+        PlanningEnvironment() : domain_parsed(false) {}
 
 		/* PDDL to Knowledge Base naming map */
 		std::map<std::string,std::string> name_map;
@@ -34,7 +35,17 @@ namespace KCL_rosplan
 		// maps operator name to a list of preconditions; stored as [pred_name, label_0, label_1, ...]
 		std::map<std::string, std::vector<std::vector<std::string> > > domain_operator_precondition_map;
 
-	};
-} // close namespace
+		/* problem information */
+		std::vector<rosplan_knowledge_msgs::KnowledgeItem> instance_attributes;
+		std::vector<rosplan_knowledge_msgs::KnowledgeItem> domain_attributes;
+		std::vector<rosplan_knowledge_msgs::KnowledgeItem> goal_attributes;
+
+		// maps object type name to list of object instance names
+		std::map<std::string,std::vector<std::string> > type_object_map;
+
+		// maps instance name to type name
+		std::map<std::string,std::string> object_type_map;
+    };
+}
 
 #endif

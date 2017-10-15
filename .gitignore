@@ -1,1 +1,5 @@
 *~
+*.kate-swp
+.kdev4/
+*.kdev4
+	
