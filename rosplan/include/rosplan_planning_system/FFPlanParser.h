@@ -28,9 +28,6 @@ namespace KCL_rosplan {
     public:        
         virtual ~FFPlanParser();
 
-        /* post process plan */
-        double total_plan_duration;
-
         void reset();
         void preparePlan(std::string &dataPath, PlanningEnvironment &environment, size_t freeActionID);
         void generateFilter(PlanningEnvironment &environment);

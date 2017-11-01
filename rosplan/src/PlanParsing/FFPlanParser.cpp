@@ -60,7 +60,7 @@ namespace KCL_rosplan {
     * processes the parameters of a single PDDL action into an ActionDispatch message
     */
     void FFPlanParser::processPDDLParameters(rosplan_dispatch_msgs::ActionDispatch &msg, std::vector<std::string> &params, PlanningEnvironment &environment) {
-
+        
         // find the correct PDDL operator definition
         std::map<std::string,std::vector<std::string> >::iterator ait;
         ait = environment.domain_operators.find(msg.name);
@@ -74,10 +74,10 @@ namespace KCL_rosplan {
                 msg.parameters.push_back(pair);
 
                 // prepare object existence for the knowledge filter
-                bool add = true;
+                bool toBeAdded = true;
                 for(size_t j=0; j<filter_objects.size(); j++)
-                    if(0==filter_objects[j].compare(params[i])) add = false;
-                if(add) filter_objects.push_back(params[i]);
+                    if(0==filter_objects[j].compare(params[i])) toBeAdded = false;
+                if(toBeAdded) filter_objects.push_back(params[i]);
             }
 
             // prepare object attributes for the knowledge filter
@@ -103,19 +103,25 @@ namespace KCL_rosplan {
     */
     void FFPlanParser::preparePlan(std::string &dataPath, PlanningEnvironment &environment, size_t freeActionID) {
 
-        ROS_INFO("KCL: (FFPlanParser) Loading plan from file: %s. Initial action ID: %zu", ((dataPath + "plan.pddl").c_str()), freeActionID);
+        ROS_INFO("KCL: (FFPlanParser) Loading plan from file: %s. Initial action ID: %zu", dataPath.c_str(), freeActionID);
+                
+        std::string filePath;
+
+        if(dataPath.rfind("/") == dataPath.length()-1) {
+            filePath = dataPath + "plan.pddl";
+        }
+        else {
+            filePath = dataPath;
+        }
         
-        // prepare plan
-        reset();
-        
-        // load plan file
-        std::ifstream infile((dataPath + "plan.pddl").c_str());
+        std::ifstream infile(filePath.c_str());
         std::string line;
-     
         bool isPlanParsed = false;        
         bool isPlanFound = false;       
-        size_t planActionId = freeActionID;
-
+        size_t planActionId = 0;
+        planActionId = freeActionID;
+                
+        reset();
         while(!infile.eof() && !isPlanParsed) {
 
             std::getline(infile, line);
@@ -200,6 +206,36 @@ namespace KCL_rosplan {
     * populates the knowledge filter messages
     */
     void FFPlanParser::generateFilter(PlanningEnvironment &environment) {
-    }
+
+        knowledge_filter.clear();
+
+		// populate filter message with objects
+		for(size_t i=0; i<filter_objects.size(); i++) {
+			rosplan_knowledge_msgs::KnowledgeItem filterItem;
+			filterItem.knowledge_type = rosplan_knowledge_msgs::KnowledgeItem::INSTANCE;
+			filterItem.instance_type = environment.object_type_map[filter_objects[i]];
+			filterItem.instance_name = filter_objects[i];
+			knowledge_filter.push_back(filterItem);
+		}
+
+		// populate filter message with attributes, only statics, not all preconditions.
+		for(size_t i=0; i<filter_attributes.size(); i++) {
+			rosplan_knowledge_msgs::KnowledgeItem filterItem;
+			filterItem.knowledge_type = rosplan_knowledge_msgs::KnowledgeItem::FACT;
+			filterItem.attribute_name = filter_attributes[i][0];
+			if (filter_attributes[i].size() > 1)
+			{
+				filterItem.instance_type = environment.object_type_map[filter_attributes[i][1]];
+				filterItem.instance_name = filter_attributes[i][1];
+				for(size_t j=2; j<filter_attributes[i].size()-1; j+=2) {
+					diagnostic_msgs::KeyValue pair;
+					pair.key = filter_attributes[i][j];
+					pair.value = filter_attributes[i][j+1];
+					filterItem.values.push_back(pair);
+				}
+			} 
+			knowledge_filter.push_back(filterItem);
+		}
+	}
 
 } // close namespace

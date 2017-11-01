@@ -16,7 +16,7 @@ TEST(FFPlanParser, plan_file_empty) {
     
     FFPlanParser planParser;
     
-    std::string dataPath("../rosplan/test/prf-db/test_empty_");
+    std::string dataPath("../rosplan/test/prf-db/test_empty_plan.pddl");
     PlanningEnvironment environment;
     size_t freeActionID;
     
@@ -30,7 +30,7 @@ TEST(FFPlanParser, plan_not_solved) {
         
     FFPlanParser planParser;
     
-    std::string dataPath("../rosplan/test/prf-db/test_error_");
+    std::string dataPath("../rosplan/test/prf-db/test_error_plan.pddl");
     PlanningEnvironment environment;
     size_t freeActionID;
     
@@ -44,7 +44,7 @@ TEST(FFPlanParser, plan_with_one_action) {
     
     FFPlanParser planParser;
     
-    std::string dataPath("../rosplan/test/prf-db/test_1-action_");
+    std::string dataPath("../rosplan/test/prf-db/test_1-action_plan.pddl");
     PlanningEnvironment environment;
     size_t freeActionID = 10;
     
@@ -63,7 +63,7 @@ TEST(FFPlanParser, plan_with_two_actions) {
     
     FFPlanParser planParser;
     
-    std::string dataPath("../rosplan/test/prf-db/test_2-actions_");
+    std::string dataPath("../rosplan/test/prf-db/test_2-actions_plan.pddl");
     PlanningEnvironment environment;
     size_t freeActionID = 20;
     

@@ -7,10 +7,10 @@
     v3 v4 - videotape
 )
 (:init
-	    (grasped v1)
-	    (robot-at b1)
+    (grasped v1)
+    (robot-at b1)
 )
 (:goal (and
- 	(object-at v1 b1)
+    (object-at v1 b1)
 ))
 )
