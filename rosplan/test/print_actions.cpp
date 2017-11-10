@@ -41,17 +41,22 @@
 #include <iostream>
 #include <gtest/gtest.h>
 
+#include "rosplan_dispatch_msgs/ActionDispatch.h"
+#include "rosplan_planning_system/PlanningEnvironment.h"
 #include "rosplan_planning_system/FFPlanParser.h"
+
+using namespace KCL_rosplan;
 
 void
 print_actions(const std::vector<rosplan_dispatch_msgs::ActionDispatch> actions)
 {
-    for(const auto &a : actions) {
+    
+    for(size_t adx=0; adx<actions.size(); adx++) {
         std::string s;
-        for (const auto &p : a.parameters) {
-            s += " " + p.value;
+        for(size_t pdx=0; pdx<actions[adx].parameters.size(); pdx++) {
+            s += " " + actions[adx].parameters[pdx].value;
         }
-        printf("%7.3f: (%s %s)  [%.3f]\n", a.dispatch_time, a.name.c_str(), s.c_str(), a.duration);
+        printf("%7.3f: (%s %s)  [%.3f]\n", actions[adx].dispatch_time, actions[adx].name.c_str(), s.c_str(), actions[adx].duration);
     }
 }
 

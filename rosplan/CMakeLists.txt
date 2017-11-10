@@ -19,4 +19,4 @@ set(PRODUCT_SOURCES
 add_executable(test_ff_plan_parser test/test_ff_parser.cpp ${PRODUCT_SOURCES})
 target_link_libraries(test_ff_plan_parser gtest gmock_main)
 
-#add_executable(print_plan test/print_plan.cpp ${PRODUCT_SOURCES})
+add_executable(print_actions test/print_actions.cpp ${PRODUCT_SOURCES})
