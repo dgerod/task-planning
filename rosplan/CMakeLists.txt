@@ -14,7 +14,8 @@ include_directories(
     ${GTEST_INCLUDE_DIRS}
 )
 set(PRODUCT_SOURCES
-    src/PlanParsing/FFPlanParser.cpp)
+    src/PlanParsing/FFPlanParser.cpp
+    src/PlanParsing/CFFPlanParser.cpp)
 
 add_executable(test_ff_plan_parser test/test_ff_parser.cpp ${PRODUCT_SOURCES})
 target_link_libraries(test_ff_plan_parser gtest gmock_main)

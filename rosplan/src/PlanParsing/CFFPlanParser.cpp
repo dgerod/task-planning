@@ -1,4 +1,4 @@
-#include "rosplan_planning_system/FFPlanParser.h"
+#include "rosplan_planning_system/CFFPlanParser.h"
 
 #include <fstream>
 #include <sstream>
@@ -9,7 +9,7 @@
 #include <ctype.h>
 #include <string>
 
-namespace KCL_rosplan  { namespace ff {
+namespace KCL_rosplan { namespace cff {
          
     /*---------------------*/
     /* string manipulation */
@@ -46,9 +46,9 @@ namespace KCL_rosplan  { namespace ff {
     /* Fast Forward parser */
     /*---------------------*/
     
-    FFPlanParser::~FFPlanParser() {}
+    CFFPlanParser::~CFFPlanParser() {}
 
-    void FFPlanParser::reset() {
+    void CFFPlanParser::reset() {
         filter_objects.clear();
         filter_attributes.clear();
         knowledge_filter.clear();
@@ -58,10 +58,8 @@ namespace KCL_rosplan  { namespace ff {
     /**
     * processes the parameters of a single PDDL action into an ActionDispatch message
     */
-    void FFPlanParser::processPDDLParameters(rosplan_dispatch_msgs::ActionDispatch &msg, std::vector<std::string> &params, PlanningEnvironment &environment) {
+    void CFFPlanParser::processPDDLParameters(rosplan_dispatch_msgs::ActionDispatch &msg, std::vector<std::string> &params, PlanningEnvironment &environment) {
         
-        ROS_INFO0("KCL: (FFPlanParser) processPDDLParameters - begin");
-
         // find the correct PDDL operator definition
         std::map<std::string,std::vector<std::string> >::iterator ait;
         ait = environment.domain_operators.find(msg.name);
@@ -97,17 +95,13 @@ namespace KCL_rosplan  { namespace ff {
                 filter_attributes.push_back(filterAttribute);
             }
         } // end of operator
-    
-        ROS_INFO0("KCL: (FFPlanParser) processPDDLParameters - end");
     }
 
     /**
     * Parse a plan written by FF
     */
-    void FFPlanParser::preparePlan(std::string &dataPath, PlanningEnvironment &environment, size_t freeActionID) {
+    void CFFPlanParser::preparePlan(std::string &dataPath, PlanningEnvironment &environment, size_t freeActionID) {
 
-        ROS_INFO1("KCL: (FFPlanParser) Loading plan from: %s\n", dataPath.c_str());
-               
         std::string filePath;
 
         if(dataPath.rfind("/") == dataPath.length()-1) {
@@ -116,9 +110,9 @@ namespace KCL_rosplan  { namespace ff {
         else {
             filePath = dataPath;
         }
-             
-        ROS_INFO2("KCL: (FFPlanParser) Plan file: %s. Initial action ID: %zu\n", filePath.c_str(), freeActionID);
-    
+        
+        ROS_INFO2("KCL: (CFFPlanParser) Plan file: %s. Initial action ID: %zu", filePath.c_str(), freeActionID);
+        
         std::ifstream infile(filePath.c_str());
         std::string line;
         bool isPlanParsed = false;        
@@ -138,7 +132,7 @@ namespace KCL_rosplan  { namespace ff {
             // search actions of the plan
             if(!isPlanFound) {
                 // loop until plan is printed             
-                if(line.compare("ff: found legal plan as follows") != 0) {
+                if(line.compare("ff: found plan as follows") != 0) {
                     continue;                    
                 }                
 
@@ -160,59 +154,52 @@ namespace KCL_rosplan  { namespace ff {
             }            
             // parse plan actions once header is found                    
             else {
-                ROS_INFO0("KCL: (FFPlanParser) Parse actions\n");
-      
+
+		ROS_INFO0("KCL: (CFFPlanParser) Parse actions\n");
+
                 // plan action
-                if(!line.empty()) {
+                if(!line.empty()) 
+                {
+                    if (!(line.compare("-------------------------------------------------")==0)) {
+                    
+                        rosplan_dispatch_msgs::ActionDispatch msg;
+                        std::vector<std::string> s;
+                        
+                        // actions look like this:
+                        // "16||1", "---", "operator_name", "param1", ..., "---", "son:", "17||-1"
+                        // "11||1", "---", "operator_name", "param1", ..., "---", "trueson:", "12||1", "---", "falseson:", "12||2"
+                        str_utils::split(line, s, ' ');
+                        std::string action_id = s[0];
+                        std::string operator_name = s[2];                    
 
-                    rosplan_dispatch_msgs::ActionDispatch msg;
-                    std::vector<std::string> s;
-                    size_t idx = 0;
-                                        
-                    // actions look like this:
-                    // step    0: MOVE_TO_PLACE B1 C1
-                    //         1: FIND_OBJECT V1 
-                    str_utils::split(line, s, ' ');
-                    if(s[0] == "step") { idx = 1; }
+                        // collect parameters
+                        std::vector<std::string> params;
+                        int idx = 3;
+                        while (idx<s.size() && s[idx]!="---") {
+                            params.push_back(s[idx]);
+                            idx++;
+                        }
+                            
+                        // Prepare action dispatch message
+                        msg.action_id = planActionId;
+                        msg.name = operator_name;
+                        msg.dispatch_time = 0.0;                    
+                        
+                        if(params.size() > 0) {
+                            processPDDLParameters(msg, params, environment);
+                        }
+                        action_list.push_back(msg);
 
-                    ROS_INFO1("%s", line.c_str());
-                    
-                    for(size_t pdx=0; pdx<s.size(); pdx++) {                        
-                        ROS_INFO1("%s", s[pdx].c_str());
-                    }
-                    
-                    std::string operator_name = s[idx+1];                    
-                    ROS_INFO1("Operator: %s", operator_name.c_str());
-                                       
-                    ROS_INFO0("Collect parameters:");
-                    // collect parameters
-                    std::vector<std::string> params;
-                    for(size_t pdx=idx+2; pdx<s.size(); pdx++) {                        
-                        params.push_back(s[pdx]);
-                        ROS_INFO1("\t%s", s[pdx].c_str());                        
-                    }
-                          
-                    // Prepare action dispatch message
-                    msg.action_id = planActionId;
-                    msg.name = operator_name;
-                    msg.dispatch_time = 0.0;                    
-                    ROS_INFO2("KCL: (FFPlanParser) Message - ID: %zu, Name: %s", planActionId, operator_name.c_str());
-                    
-                    if(params.size() > 0) {
-                        processPDDLParameters(msg, params, environment);
-                    }
+                        ROS_INFO2("KCL: (PS)(CFFPlanParser) Generate action - ID: %zu, Name: %s", planActionId, operator_name.c_str());
 
-                    action_list.push_back(msg);
-                    planActionId++;
-                    
-                    ROS_INFO1("KCL: (FFPlanParser) New action generated ID: %zu", planActionId-1);
-                    
+                        planActionId++;                 
+                    }
                 }
                 // no more actions, so parsing is done
                 else                    
                 {
                     isPlanParsed = true;
-                    ROS_INFO0("KCL: (FFPlanParser) Plan parse completed");
+                    ROS_INFO0("KCL: (CFFPlanParser) Plan parse completed");
        
                 }
             }
@@ -225,7 +212,7 @@ namespace KCL_rosplan  { namespace ff {
     /**
     * populates the knowledge filter messages
     */
-    void FFPlanParser::generateFilter(PlanningEnvironment &environment) {
+    void CFFPlanParser::generateFilter(PlanningEnvironment &environment) {
 
         knowledge_filter.clear();
 

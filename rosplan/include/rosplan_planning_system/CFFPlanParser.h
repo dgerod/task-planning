@@ -1,15 +1,12 @@
-/**
-* Parses the output of Fast Fordward planner and generates a list of ActionDispatch messages.
-*/
 #include <string>
 #include "ros/ros.h"
 #include "PlanningEnvironment.h"
 #include "PlanParser.h"
 
-#ifndef KCL_ff_plan_parser
-#define KCL_ff_plan_parser
+#ifndef KCL_cff_plan_parser
+#define KCL_cff_plan_parser
 
-namespace KCL_rosplan { namespace ff {
+namespace KCL_rosplan { namespace cff {
 
     namespace str_utils {
         
@@ -17,7 +14,7 @@ namespace KCL_rosplan { namespace ff {
         unsigned int split(const std::string &txt, std::vector<std::string> &strs, char ch);
     }
 
-    class FFPlanParser: public PlanParser
+    class CFFPlanParser: public PlanParser
     {
     private:        
         std::vector<std::string> filter_objects;
@@ -26,7 +23,7 @@ namespace KCL_rosplan { namespace ff {
         void processPDDLParameters(rosplan_dispatch_msgs::ActionDispatch &msg, std::vector<std::string> &params, PlanningEnvironment &environment);
 
     public:        
-        virtual ~FFPlanParser();
+        virtual ~CFFPlanParser();
 
         void reset();
         void preparePlan(std::string &dataPath, PlanningEnvironment &environment, size_t freeActionID);

@@ -46,6 +46,7 @@
 #include "rosplan_planning_system/FFPlanParser.h"
 
 using namespace KCL_rosplan;
+using namespace KCL_rosplan::ff;
 
 void
 print_actions(const std::vector<rosplan_dispatch_msgs::ActionDispatch> actions)

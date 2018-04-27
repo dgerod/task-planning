@@ -11,6 +11,7 @@
 #include "rosplan_planning_system/FFPlanParser.h"
 
 using namespace KCL_rosplan;
+using namespace KCL_rosplan::ff;
 
 TEST(FFPlanParser, plan_file_empty) {
     
@@ -79,4 +80,16 @@ TEST(FFPlanParser, plan_with_two_actions) {
     ASSERT_STREQ(planParser.action_list[1].name.c_str(), "find_object");    
     //ASSERT_STREQ(planParser.action_list[1].parameters[0], "v1");
     //ASSERT_STREQ(planParser.action_list[1].parameters[1], "c1");
+}
+
+TEST(FFPlanParser, plan_with_10000_actions) {
+        
+    FFPlanParser planParser;
+    
+    std::string dataPath("../rosplan/test/prf-db/plan.pddl");
+    PlanningEnvironment environment;
+    size_t freeActionID = 0;
+    
+    planParser.reset();
+    planParser.preparePlan(dataPath, environment, freeActionID);   
 }
